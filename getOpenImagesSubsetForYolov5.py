@@ -1,5 +1,38 @@
-# get images files with annotation from 
-# https://storage.googleapis.com/openimages/web/download.html
+#!/usr/bin/env python
+""" get images files with annotation from https://storage.googleapis.com/openimages/web/download.html
+this code will help to find and download relevant image files and annotation from the gigantic openimages repository to create a personal dataset aimed for object recognition (e.g. Yolo_
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <http://www.gnu.org/licenses/>.
+"""
+
+__author__ = "Pascal Olin"
+__authors__ = ["Pascal Olin"]
+__contact__ = "polin1962@gmail.com"
+__copyright__ = "Copyright 2022, PO"
+__credits__ = ["Pascal Olin", "see contributors at https://storage.googleapis.com/openimages/web/extras.html"]
+__date__ = "2022/01/08"
+__deprecated__ = False
+__email__ =  "polin1962@gmail.com"
+__license__ = "GPLv3"
+__maintainer__ = "Pascal Olin"
+__status__ = "Production"
+__version__ = "0.1.1"
+
+# first download a copy of BOXed images names at : https://storage.googleapis.com/openimages/v6/oidv6-train-annotations-bbox.csv 
+# keep only a subset of this file (for example the first million record : head -n 1000000 <downloaded big file name> > <new smaller file name> 
+# it will be our --imageids parameter file 
+# then download a copy of class names at  : https://storage.googleapis.com/openimages/v5/class-descriptions-boxable.csv
+# it will be our --categories parameter file 
+
+
 import os 
 import argparse
 import csv
@@ -9,7 +42,7 @@ parser.add_argument("-c","--categories", help="Code/category filename")
 parser.add_argument("-i","--imagesids", help="imageids  filename")
 parser.add_argument("-o","--outpath", help="output directory",default="./outpath")
 args = parser.parse_args()
-# codeCategoryFile is extr from : https://storage.googleapis.com/openimages/v5/class-descriptions-boxable.csv
+# codeCategoryFile is extracted from : https://storage.googleapis.com/openimages/v5/class-descriptions-boxable.csv
 # Categories we are interested with 
 myCategories= ["Cat","Sunglasses","Laptop","Person",
                         "Toothbrush","Apple","Toaster",
@@ -58,10 +91,8 @@ maxImagesPerCategory = 1200
 
 with open (codeCategoryFile) as csvfile:
     CCreader = csv.DictReader(csvfile,delimiter=',',fieldnames=fieldnames)
-    #CategoryCC
     _ndx=0
     for row in CCreader:
-        #if (row['Category'] in ["Human eye","Cat","Sunglasses"]):
         if (row['Category'] in myCategories):
             print (row['Category'] , row['Code'])
             CC[row['Code']]=row['Category']
